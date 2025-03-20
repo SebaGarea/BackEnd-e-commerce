@@ -1,0 +1,31 @@
+<div class="productos-container">
+    <h1 class="titulo-principal">Editar producto</h1>
+
+    <div class="product-container">
+        <form action="/api/products/{{producto._id}}?_method=PUT" method="POST" enctype="multipart/form-data">
+            <label for="cod">Código: </label>
+            <input type="number" id="cod" name="cod" value="{{producto.cod}}" required>
+            
+            <label for="nombre">Nombre: </label>
+            <input type="text" id="nombre" name="nombre" value="{{producto.nombre}}" required>
+            
+            <label for="precio">Precio: </label>
+            <input type="number" id="precio" name="precio" value="{{producto.precio}}" required>
+            
+            <label for="descripcion">Descripción: </label>
+            <input type="text" id="descripcion" name="descripcion" value="{{producto.descripcion}}" required>
+            
+            <label for="file">Imagen del producto:</label>
+            <input type="file" id="file" name="file">
+            
+            <label for="stock">Stock: </label>
+            <input type="number" id="stock" name="stock" value="{{producto.stock}}" required>
+            
+            <input type="hidden" name="status" value="{{producto.status}}">
+            
+            <br>
+            <br>
+            <button type="submit" class="btn btn-agregar">Actualizar Producto</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<div class="productos-container">
+    <h1 class="titulo-principal">Insertar un nuevo producto</h1>
+
+    <div class="product-container">
+        <form action="/api/products" method="POST" enctype="multipart/form-data">
+            <label for="cod">Código: </label>
+            <input type="number" id="cod" name="cod" required>
+            
+            <label for="nombre">Nombre: </label>
+            <input type="text" id="nombre" name="nombre" required>
+            
+            <label for="precio">Precio: </label>
+            <input type="number" id="precio" name="precio" required>
+            
+            <label for="descripcion">Descripción: </label>
+            <input type="text" id="descripcion" name="descripcion" required>
+            
+            <label for="file">Imagen del producto:</label>
+            <input type="file" id="file" name="file">
+            
+            <label for="stock">Stock: </label>
+            <input type="number" id="stock" name="stock" required>
+            
+            <input type="hidden" name="status" value="true">
+            
+            <br>
+            <br>
+            <button type="submit" class="btn btn-agregar">Insertar Producto</button>
+        </form>
+    </div>
+</div>

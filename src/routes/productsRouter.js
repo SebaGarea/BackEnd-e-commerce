@@ -1,166 +1,168 @@
-import { Router } from 'express';
-import { readProducts, writeProducts } from '../utils/fileUtils.js';
+import { Router } from "express";
+import {uploader} from "../utilsMulter.js";
+import ProductoModel from "../models/product.model.js";
 
 const router = Router();
 
 // Metodo Get Raiz
-router.get('/', async (req, res) => {
-    const products = await readProducts(); // Leemos los productos del archivo
-    res.json({ products });
-});
+router.get("/", async (req, res) => {
+  try {
+    // Obtener parámetros de consulta con valores por defecto
+    const { limit = 10, page = 1, sort, category } = req.query;
 
-// Metodo GET id
-router.get('/:pid', async (req, res) => {
-    const productId = req.params.pid;
-    const products = await readProducts(); // Leemos los productos del archivo
-
-    // Buscamos el producto por id
-    const product = products.find(product => product.id == productId);
-
-    // Validamos si el producto existe
-    if (!product) {
-        return res.status(404).json({ status: 'error', error: 'Product not found' });
-    }
-
-    // Si existe lo devolvemos
-    res.json({ product });
-});
-
-// Metodo POST Raiz
-router.post('/', async (req, res) => {
-    const { title, description, code, price, status, stock, category } = req.body;
-    const products = await readProducts(); // Leemos los productos del archivo
-
-    // Validamos que todos los campos esten completos
-    if (!title || !description || !code || !price || !status || !stock || !category) {
-        return res.status(400).json({
-            status: 'error',
-            error: 'Todos los campos son obligatorios',
-        });
-    }
-
-    // Validamos que price y stock sean numbers
-    if (typeof price !== 'number' || typeof stock !== 'number') {
-        return res.status(400).json({
-            status: 'error',
-            message: 'Price y stock deben ser números',
-        });
-    }
-
-    // Validación del code antes de crear el producto
-    const isDuplicateCode = products.some(product => product.code === code);
-    if (isDuplicateCode) {
-        return res.status(400).json({
-            status: 'error',
-            message: `El código ${code} ya existe en otro producto`,
-        });
-    }
-
-    // Generemos un id unico
-    const maxId = products.length > 0 ? Math.max(...products.map(product => product.id)) : 0;
-    const newId = maxId + 1;
-
-    // Creamos el nuevo producto
-    const newProduct = {
-        id: newId,
-        title,
-        description,
-        code,
-        price,
-        stock,
-        status: true,
-        category,
+    // Configurar opciones de paginación
+    const options = {
+      page: parseInt(page),
+      limit: parseInt(limit),
+      sort: sort ? { price: sort === "asc" ? 1 : -1 } : undefined,
     };
 
-    // Agregamos el producto al array
-    products.push(newProduct);
-    await writeProducts(products); // Escribimos los productos actualizados en el archivo
+    // Configurar filtros
+    const queryFilter = {};
+    if (category) {
+      queryFilter.category = category;
+    }
 
-    res.status(201).json({
-        status: 'success',
-        message: 'Producto creado',
-        product: newProduct,
+    // Realizar la consulta paginada
+    const result = await ProductoModel.paginate(queryFilter, options);
+
+    // Construir enlaces de navegación
+    const baseUrl = `${req.protocol}://${req.get("host")}${req.baseUrl}`;
+    const prevLink = result.hasPrevPage
+      ? `${baseUrl}?page=${result.prevPage}&limit=${limit}${
+          sort ? `&sort=${sort}` : ""
+        }${category ? `&category=${category}` : ""}`
+      : null;
+    const nextLink = result.hasNextPage
+      ? `${baseUrl}?page=${result.nextPage}&limit=${limit}${
+          sort ? `&sort=${sort}` : ""
+        }${category ? `&category=${category}` : ""}`
+      : null;
+
+    // Enviar respuesta formateada
+    res.json({
+      status: "success",
+      payload: result.docs,
+      totalPages: result.totalPages,
+      prevPage: result.prevPage,
+      nextPage: result.nextPage,
+      page: result.page,
+      hasPrevPage: result.hasPrevPage,
+      hasNextPage: result.hasNextPage,
+      prevLink,
+      nextLink,
     });
+  } catch (error) {
+    console.error("Error al obtener productos:", error);
+    res.status(500).json({
+      status: "error",
+      error: "Error al obtener los productos",
+    });
+  }
+});
+// Metodo GET id
+router.get("/:cod", async (req, res) => {
+    try {
+      const producto = await ProductModel.findOne({ cod: req.params.cod });
+      if (!producto) {
+        res.render("error", { error: "Producto no encontrado" });
+      }
+      res.render("producto", { producto: producto.toObject() });
+    } catch (error) {
+      return res.render("error", { error: "Error al obtener el producto" });
+    }
+  });
+
+// Metodo POST Raiz
+router.post("/", uploader.single("file"), async (req, res) => {
+    try {
+        const productData = {
+            ...req.body,
+            status: req.body.status === 'true',
+            stock: parseInt(req.body.stock),
+            precio: parseFloat(req.body.precio)
+        };
+
+        if (req.file) {
+            productData.thumbnail = req.file.filename;
+        }
+
+        const newProduct = new ProductoModel(productData);
+        await newProduct.save();
+
+        res.redirect('/productos');
+    } catch (error) {
+        console.error('Error al crear producto:', error);
+        res.render("error", { 
+            error: "Error al crear el producto: " + error.message 
+        });
+    }
 });
 
 // Metodo PUT
-router.put('/:pid', async (req, res) => {
-    const productId = req.params.pid;
-    const updateFields = req.body;
-    const products = await readProducts(); // Leemos los productos del archivo
+router.put('/:pid', uploader.single('file'), async (req, res) => {
+    try {
+        const productoId = req.params.pid;
+        const updateFields = {
+            ...req.body,
+            status: req.body.status === 'true',
+            stock: parseInt(req.body.stock),
+            precio: parseFloat(req.body.precio)
+        };
 
-    // Validamos que no se actualice el ID
-    if (updateFields.id) {
-        return res.status(400).json({
-            status: 'error',
-            message: 'No se puede actualizar el ID',
-        });
+        if (req.file) {
+            updateFields.thumbnail = req.file.filename;
+        }
+
+        const updatedProducto = await ProductoModel.findByIdAndUpdate(
+            productoId,
+            updateFields,
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedProducto) {
+            return res.render('error', { error: 'Producto no encontrado' });
+        }
+
+        res.redirect('/productos');
+
+    } catch (error) {
+        console.error('Error al actualizar el producto:', error);
+        res.render('error', { error: 'Error al actualizar el producto: ' + error.message });
     }
-
-    // Buscamos el indice del producto
-    const productIndex = products.findIndex(product => product.id == productId);
-
-    // Validamos si el producto existe
-    if (productIndex === -1) {
-        return res.status(404).json({
-            status: 'error',
-            message: 'Producto no encontrado',
-        });
-    }
-
-    // Validamos los tipos de datos si se actualizan price o stock
-    if (updateFields.price && typeof updateFields.price !== 'number') {
-        return res.status(400).json({
-            status: 'error',
-            message: 'Price debe ser un número',
-        });
-    }
-
-    if (updateFields.stock && typeof updateFields.stock !== 'number') {
-        return res.status(400).json({
-            status: 'error',
-            message: 'Stock debe ser un número',
-        });
-    }
-
-    // Actualizamos el producto manteniendo el id original
-    products[productIndex] = {
-        ...products[productIndex], // Mantenemos los datos originales
-        ...updateFields, // Actualizamos con los nuevos campos
-        id: products[productIndex].id, // Aseguramos que el id no cambie
-    };
-
-    await writeProducts(products); // Escribimos los productos actualizados en el archivo
-
-    res.json({
-        status: 'success',
-        message: 'Producto actualizado',
-        product: products[productIndex],
-    });
 });
 
 // Metodo DELETE :pid
-router.delete('/:pid', async (req, res) => {
-    const productId = req.params.pid;
-    const products = await readProducts(); // Leemos los productos del archivo
-    const productIndex = products.findIndex(product => product.id == productId);
+router.delete("/:pid", async (req, res) => {
+    try {
+        const productoId = req.params.pid;
 
-    if (productIndex === -1) {
-        return res.status(404).json({
-            status: 'error',
-            message: 'Producto no encontrado',
+        // Buscamos y eliminamos el producto
+        const deletedProducto = await ProductoModel.findByIdAndDelete(productoId);
+
+        // Verificamos si el producto existía
+        if (!deletedProducto) {
+            return res.status(404).json({
+                status: "error",
+                message: "Producto no encontrado"
+            });
+        }
+
+        // Respondemos con éxito
+        res.json({
+            status: "success",
+            message: "Producto eliminado exitosamente",
+            deletedProducto
+        });
+
+    } catch (error) {
+        console.error('Error al eliminar el producto:', error);
+        res.status(500).json({
+            status: "error",
+            message: "Error al eliminar el producto",
+            error: error.message
         });
     }
-
-    const deletedProduct = products[productIndex];
-    products.splice(productIndex, 1);
-    await writeProducts(products); // Escribimos los productos actualizados en el archivo
-
-    res.json({
-        status: 'success',
-        message: 'Producto eliminado exitosamente',
-        deletedProduct,
-    });
 });
 
 export default router;

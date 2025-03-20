@@ -1,0 +1,24 @@
+<div class="productos-container">
+    <div class="producto-card">
+        <div class="producto-info">
+            <h2 class="producto-titulo">{{producto.nombre}}</h2>
+            <p class="producto-codigo">Código: {{producto.cod}}</p>
+            
+            {{#if producto.thumbnail}}
+                <img src="/img/{{producto.thumbnail}}" alt="{{producto.nombre}}" class="producto-imagen">
+            {{else}}
+                <img src="/img/no-image.png" alt="Sin imagen" class="producto-imagen">
+            {{/if}}
+            
+            <p class="producto-precio">${{producto.precio}}</p>
+            <p class="description">{{producto.descripcion}}</p>
+            
+            <div class="producto-acciones">
+                <a href="/productos" class="btn btn-ver">Volver al Catálogo</a>
+                <form action="/producto/{{producto._id}}?_method=DELETE" method="POST" class="form-eliminar">
+                    <button type="submit" class="btn btn-eliminar">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
