@@ -121,6 +121,10 @@ header {
 }
 
 .producto-card {
+    display: flex;
+    flex-direction: column;
+    height: auto; 
+    min-height: 400px;
     background: white;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -140,6 +144,9 @@ header {
 
 .producto-info {
     padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .producto-titulo {
@@ -163,9 +170,10 @@ header {
 
 .producto-acciones {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     gap: 10px;
-    margin-top: 15px;
+    margin-top: auto;
+    padding: 15px;
 }
 
 .btn {
@@ -177,6 +185,8 @@ header {
     text-decoration: none;
     text-align: center;
     transition: background-color 0.3s ease;
+    width: 100%;
+    margin-bottom: 5px;
 }
 
 .btn-ver {
@@ -223,6 +233,7 @@ header {
 
 .form-eliminar {
     margin: 0;
+    width: 100%;
 }
 
 @media (max-width: 768px) {

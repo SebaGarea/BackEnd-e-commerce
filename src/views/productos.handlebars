@@ -1,35 +1,56 @@
 <div class="productos-container">
-    <h1 class="titulo-principal">Catálogo de Productos</h1>
-    
-    <div class="productos-grid">
-        {{#each productos}}
-            <div class="producto-card">
-                {{#if this.thumbnail}}
-                    <img src="/img/{{this.thumbnail}}" alt="{{this.nombre}}" class="producto-imagen">
-                {{else}}
-                    <img src="/img/no-image.png" alt="Sin imagen" class="producto-imagen">
-                {{/if}}
-                
-                <div class="producto-info">
-                    <h2 class="producto-titulo">{{this.nombre}}</h2>
-                    <p class="producto-codigo">Código: {{this.cod}}</p>
-                    <p class="producto-precio">${{this.precio}}</p>
-                    
-                    <div class="producto-acciones">
-                        <a href="/producto/{{this.cod}}" class="btn btn-ver">Ver detalle</a>
-                        <a href="/productos/editar/{{this._id}}" class="btn btn-ver">Editar</a>
-                        <form action="/producto/{{this._id}}?_method=DELETE" method="POST" class="form-eliminar">
-                            <button type="submit" class="btn btn-eliminar">Eliminar</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        {{else}}
-            <p class="no-productos">No hay productos disponibles</p>
-        {{/each}}
-    </div>
+  <h1 class="titulo-principal">Catálogo de Productos</h1>
 
-    <div class="acciones-principales">
-        <a href="/productos/nuevo" class="btn btn-agregar">Agregar Nuevo Producto</a>
-    </div>
+  <div class="productos-grid">
+    {{#each productos}}
+      <div class="producto-card">
+        {{#if this.thumbnail}}
+          <img
+            src="/img/{{this.thumbnail}}"
+            alt="{{this.nombre}}"
+            class="producto-imagen"
+          />
+        {{else}}
+          <img
+            src="/img/no-image.png"
+            alt="Sin imagen"
+            class="producto-imagen"
+          />
+        {{/if}}
+
+        <div class="producto-info">
+          <h2 class="producto-titulo">{{this.nombre}}</h2>
+          <p class="producto-codigo">Código: {{this.cod}}</p>
+          <p class="producto-precio">${{this.precio}}</p>
+
+          <div class="producto-acciones">
+            <a href="/producto/{{this.cod}}" class="btn btn-ver">Ver detalle</a>
+            <a
+              href="/productos/editar/{{this._id}}"
+              class="btn btn-ver"
+            >Editar</a>
+            <form
+              action="/producto/{{this._id}}?_method=DELETE"
+              method="POST"
+              class="form-eliminar"            >
+              <button type="submit" class="btn btn-eliminar">Eliminar</button>
+            </form>
+            <br>
+            <form
+        action="/api/carts/{{../cartId}}/producto/{{this._id}}"
+        method="POST"
+        class="form-agregar-carrito">
+        <button type="submit" class="btn btn-agregar">Agregar al carrito</button>
+    </form>
+          </div>
+        </div>
+      </div>
+    {{else}}
+      <p class="no-productos">No hay productos disponibles</p>
+    {{/each}}
+  </div>
+
+  <div class="acciones-principales">
+    <a href="/productos/nuevo" class="btn btn-agregar">Agregar Nuevo Producto</a>
+  </div>
 </div>

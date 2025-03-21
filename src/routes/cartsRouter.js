@@ -1,5 +1,5 @@
 import { Router } from "express";
-import CartModel from '../models/cart.model.js';
+import cartModel from '../models/cart.model.js';
 import ProductoModel from '../models/product.model.js';
 const router = Router();
 
@@ -26,7 +26,7 @@ router.post("/", async (req, res) => {
 // Metodo GET raiz
 router.get('/', async (req, res) => {
     try {
-        const carts = await CartModel.find().populate('productos.producto');
+        const carts = await cartModel.find().populate('productos.producto');
         res.json({
             status: 'success',
             carts
@@ -43,7 +43,7 @@ router.get('/', async (req, res) => {
 // Metodo GET id
 router.get('/:cid', async (req, res) => {
     try {
-        const cart = await CartModel.findById(req.params.cid).populate('productos.producto');
+        const cart = await cartModel.findById(req.params.cid).populate('productos.producto');
         
         if (!cart) {
             return res.status(404).json({
@@ -66,13 +66,13 @@ router.get('/:cid', async (req, res) => {
 });
 
 // Metodo POST id
-router.post("/:cid/product/:pid", async (req, res) => {
+router.post("/:cid/producto/:pid", async (req, res) => {
     try {
         const cartId = req.params.cid;
         const productoId = req.params.pid;
 
         // Verificar si el carrito existe
-        const cart = await CartModel.findById(cartId);
+        const cart = await cartModel.findById(cartId);
         if (!cart) {
             return res.status(404).json({
                 status: "error",
@@ -81,7 +81,7 @@ router.post("/:cid/product/:pid", async (req, res) => {
         }
 
         // Verificar si el producto existe
-        const producto = await ProductoModel.findById(productId);
+        const producto = await ProductoModel.findById(productoId);
         if (!producto) {
             return res.status(404).json({
                 status: "error",
@@ -94,7 +94,7 @@ router.post("/:cid/product/:pid", async (req, res) => {
             (item) => item.producto.toString() === productoId
         );
 
-        if (productIndex === -1) {
+        if (productoIndex === -1) {
             // Si el producto no existe en el carrito, lo agregamos
             cart.productos.push({
                 producto: productoId,
@@ -109,7 +109,7 @@ router.post("/:cid/product/:pid", async (req, res) => {
         await cart.save();
 
         // Poblamos la información del producto para la respuesta
-        const updatedCart = await cart.populate('products.product');
+        const updatedCart = await cart.populate('productos.producto');
 
         res.json({
             status: "success",
