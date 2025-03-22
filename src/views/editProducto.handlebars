@@ -2,7 +2,7 @@
     <h1 class="titulo-principal">Editar producto</h1>
 
     <div class="product-container">
-        <form action="/api/products/{{producto._id}}?_method=PUT" method="POST" enctype="multipart/form-data">
+        <form action="/api/productos/{{producto._id}}?_method=PUT" method="POST" enctype="multipart/form-data">
             <label for="cod">Código: </label>
             <input type="number" id="cod" name="cod" value="{{producto.cod}}" required>
             

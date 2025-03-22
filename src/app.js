@@ -49,7 +49,7 @@ app.listen(config.PORT, ()=>{
 
 
 //Implementamos los router que creamos
-app.use('/api/products', productsRouter);
+app.use('/api/productos', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/', viewsRouter);
 
