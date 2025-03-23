@@ -11,10 +11,20 @@
                         <p>Precio: ${{this.producto.precio}}</p>
                         <p>Cantidad: {{this.quantity}}</p>
                     </div>
+                    <form
+                        action="/api/carts/{{../cart._id}}/producto/{{this.producto._id}}?_method=DELETE"
+                        method="POST"
+                        class="form-eliminar">
+                        <button type="submit" class="btn btn-eliminar">Eliminar del carrito</button>
+                    </form>
                 </div>
             {{/each}}
         </div>
     {{else}}
         <p>No hay productos en el carrito</p>
     {{/if}}
+    
+    <div class="acciones-principales">
+        <a href="/productos" class="btn btn-ver">Volver al Catálogo</a>
+    </div>
 </div>

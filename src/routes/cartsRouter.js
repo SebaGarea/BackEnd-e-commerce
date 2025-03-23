@@ -128,4 +128,32 @@ router.post("/:cid/producto/:pid", async (req, res) => {
     }
 });
 
+// Método DELETE para eliminar un producto del carrito
+router.delete('/:cid/producto/:pid', async (req, res) => {
+    try {
+        const cartId = req.params.cid;
+        const productoId = req.params.pid;
+
+        const cart = await cartModel.findById(cartId);
+        if (!cart) {
+            return res.render('error', { error: 'Carrito no encontrado' });
+        }
+
+        // Encontrar y eliminar el producto del array de productos
+        cart.productos = cart.productos.filter(
+            item => item.producto.toString() !== productoId
+        );
+
+        await cart.save();
+
+        // Redirigir de vuelta a la página del carrito
+        res.redirect(`/cart/${cartId}`);
+    } catch (error) {
+        console.error('Error al eliminar producto del carrito:', error);
+        res.render('error', { 
+            error: 'Error al eliminar el producto del carrito: ' + error.message 
+        });
+    }
+});
+
 export default router;

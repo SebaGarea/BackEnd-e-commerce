@@ -13,11 +13,19 @@
             <p class="producto-precio">${{producto.precio}}</p>
             <p class="description">{{producto.descripcion}}</p>
             
+            <form
+        action="/api/carts/{{cartId}}/producto/{{producto._id}}"
+        method="POST"
+        class="form-agregar-carrito">
+        <button type="submit" class="btn btn-agregar">Agregar al carrito</button>
+    </form>
             <div class="producto-acciones">
                 <a href="/productos" class="btn btn-ver">Volver al Catálogo</a>
+
                 <form action="/producto/{{producto._id}}?_method=DELETE" method="POST" class="form-eliminar">
                     <button type="submit" class="btn btn-eliminar">Eliminar</button>
                 </form>
+           
             </div>
         </div>
     </div>

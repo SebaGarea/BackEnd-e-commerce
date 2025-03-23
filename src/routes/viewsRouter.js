@@ -38,9 +38,30 @@ router.get('/productos', async (req, res) => {
 
 //Ruta para mostrar un producto por su :cod
 router.get('/producto/:cod', async (req, res)=>{
-    const producto = await ProductoModel.findOne({cod: req.params.cod}).lean();
-    res.render('producto', {producto});
+    try{
+        const producto = await ProductoModel.findOne({cod: req.params.cod}).lean();
+        
+        let cart = await cartModel.findOne();
+        if (!cart) {
+            cart = await cartModel.create({ productos: [] });
+        }
+
+        res.render('producto', {
+            producto,
+            cartId: cart._id.toString()
+        });
+    
+    }catch(error){
+        console.error('Error:', error);
+        res.render('error', { error: 'Error al cargar el producto' });
+
+    }
 })
+
+
+
+
+
 
 // Ruta para mostrar el formulario de edición de producto
 router.get('/productos/editar/:id', async (req, res) => {
@@ -58,7 +79,7 @@ router.get('/productos/editar/:id', async (req, res) => {
 // Ruta para ver el carrito
 router.get('/cart/:cid', async (req, res) => {
     try {
-        const cart = await CartModel.findById(req.params.cid)
+        const cart = await cartModel.findById(req.params.cid)
             .populate('productos.producto')
             .lean();
             
