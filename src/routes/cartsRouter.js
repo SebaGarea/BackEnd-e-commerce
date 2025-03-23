@@ -90,7 +90,7 @@ router.post("/:cid/producto/:pid", async (req, res) => {
         }
 
         // Buscar si el producto ya existe en el carrito
-        const productoIndex = cart.productos.findIndex( //retorna-`1` si no lo encuentra
+        const productoIndex = cart.productos.findIndex(
             (item) => item.producto.toString() === productoId
         );
 
@@ -111,10 +111,11 @@ router.post("/:cid/producto/:pid", async (req, res) => {
         // Utilizamos populate para obtener los datos completos del producto
         const updatedCart = await cart.populate('productos.producto');
 
-        res.json({
+        // Renderizamos la vista cart.handlebars con los datos del carrito
+        res.render('cart', { 
+            cart: updatedCart.toObject(),
             status: "success",
-            message: "Producto agregado al carrito",
-            cart: updatedCart
+            message: "Producto agregado al carrito"
         });
 
     } catch (error) {

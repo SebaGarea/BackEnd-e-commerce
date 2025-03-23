@@ -116,20 +116,23 @@ header {
 .productos-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
+    gap: 25px;
     margin-bottom: 30px;
+    padding: 20px;
 }
 
 .producto-card {
     display: flex;
     flex-direction: column;
     height: auto; 
-    min-height: 400px;
+    min-height: 380px;
     background: white;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     transition: transform 0.3s ease;
     overflow: hidden;
+    padding: 15px;
+    border: 1px solid #e2e8f0;
 }
 
 .producto-card:hover {
@@ -138,21 +141,26 @@ header {
 
 .producto-imagen {
     width: 100%;
-    height: 200px;
-    object-fit: cover;
+    height: 160px;
+    object-fit: contain;
+    padding: 10px;
+    background-color: #f8f9fa;
 }
 
 .producto-info {
-    padding: 15px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     flex: 1;
+    gap: 8px;
 }
 
 .producto-titulo {
     margin: 0;
     color: #333;
     font-size: 1.2em;
+    margin-bottom: 5px;
+    font-weight: 600;
 }
 
 .producto-codigo {
@@ -186,7 +194,8 @@ header {
     text-align: center;
     transition: background-color 0.3s ease;
     width: 100%;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .btn-ver {
