@@ -250,3 +250,21 @@ header {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
 }
+
+/* Estilos para el contenedor principal */
+.main-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    background-color: #f5f5f5;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
