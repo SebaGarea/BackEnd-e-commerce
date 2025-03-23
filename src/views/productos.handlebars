@@ -25,23 +25,12 @@
 
           <div class="producto-acciones">
             <a href="/producto/{{this.cod}}" class="btn btn-ver">Ver detalle</a>
-            <a
-              href="/productos/editar/{{this._id}}"
-              class="btn btn-ver"
-            >Editar</a>
-            <form
-              action="/producto/{{this._id}}?_method=DELETE"
-              method="POST"
-              class="form-eliminar"            >
+            <a href="/productos/editar/{{this._id}}"class="btn btn-ver">Editar</a>
+          </div>
+          <div>
+            <form action="/producto/{{this._id}}?_method=DELETE"method="POST"class="form-eliminar"            >
               <button type="submit" class="btn btn-eliminar">Eliminar</button>
             </form>
-            <br>
-            {{!-- <form
-        action="/api/carts/{{../cartId}}/producto/{{this._id}}"
-        method="POST"
-        class="form-agregar-carrito">
-        <button type="submit" class="btn btn-agregar">Agregar al carrito</button>
-    </form> --}}
           </div>
         </div>
       </div>

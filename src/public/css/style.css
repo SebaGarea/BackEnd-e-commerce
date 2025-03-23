@@ -178,10 +178,11 @@ header {
 
 .producto-acciones {
     display: flex;
-    flex-direction: column;
+    flex-direction: wrap;
     gap: 10px;
     margin-top: auto;
-    padding: 15px;
+    padding: 5px;
+    
 }
 
 .btn {
