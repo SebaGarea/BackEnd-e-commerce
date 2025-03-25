@@ -8,7 +8,7 @@ const router = Router();
 router.get("/", async (req, res) => {
   try {
     // Obtener parámetros de consulta con valores por defecto
-    const { limit = 10, page = 1, sort, category } = req.query;
+    const { limit = 5, page = 1, sort, category } = req.query;
 
     // Configurar opciones de paginación
     const options = {
@@ -39,7 +39,7 @@ router.get("/", async (req, res) => {
         }${category ? `&category=${category}` : ""}`
       : null;
 
-    // Enviar respuesta formateada
+    
     res.json({
       status: "success",
       payload: result.docs,
@@ -63,7 +63,7 @@ router.get("/", async (req, res) => {
 // Metodo GET id
 router.get("/:cod", async (req, res) => {
     try {
-      const producto = await ProductModel.findOne({ cod: req.params.cod });
+      const producto = await ProductoModel.findOne({ cod: req.params.cod });
       if (!producto) {
         res.render("error", { error: "Producto no encontrado" });
       }
