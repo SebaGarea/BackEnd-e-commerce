@@ -26,7 +26,7 @@ router.post("/", async (req, res) => {
 // Metodo GET raiz
 router.get('/', async (req, res) => {
     try {
-        const carts = await cartModel.find().populate('productos.producto');
+        const carts = await cartModel.find();
         res.json({
             status: 'success',
             carts
@@ -43,7 +43,7 @@ router.get('/', async (req, res) => {
 // Metodo GET id
 router.get('/:cid', async (req, res) => {
     try {
-        const cart = await cartModel.findById(req.params.cid).populate('productos.producto');
+        const cart = await cartModel.findById(req.params.cid);
         
         if (!cart) {
             return res.status(404).json({

@@ -5,7 +5,7 @@ const {Schema} = mongoose;
 
 const productosCollection = 'productos'; //Setemao la nueva coleccion de productos
 
-const productosSchema = new Schema({ //armamos el esquema
+const productosSchema = new Schema({ 
     nombre:{type:String, required:true},
     cod:{type:Number, required:true, unique:true},
     precio:{type:Number, required:true},
@@ -16,7 +16,7 @@ const productosSchema = new Schema({ //armamos el esquema
      
 })
 
-productosSchema.plugin(mongoosePaginate); //agregamos el plugin de paginado
+productosSchema.plugin(mongoosePaginate); 
 
 const ProductoModel = mongoose.model(productosCollection, productosSchema);
 
