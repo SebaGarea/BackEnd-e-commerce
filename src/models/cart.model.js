@@ -18,19 +18,6 @@ const cartSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-cartSchema.pre('find', function() {
-  this.populate('productos.producto');
-});
-
-cartSchema.pre('findOne', function() {
-  this.populate('productos.producto');
-});
-
-cartSchema.pre('findById', function() {
-  this.populate('productos.producto');
-});
-
-
 const cartModel = mongoose.model("carts", cartSchema);
 
 export default cartModel;
