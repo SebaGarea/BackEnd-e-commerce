@@ -13,7 +13,16 @@ router.get('/productos/nuevo', async (req,res)=>{
 //Ruta para mostrar todos los productos
 router.get('/productos', async (req, res) => {
     try {
-        const productos = await ProductoModel.find().lean();
+        // Obtener parámetros de query
+        const { page = 1, limit = 8 } = req.query;
+        const options = {
+            page: parseInt(page),
+            limit: parseInt(limit),
+            lean: true
+        };
+
+        // Realizar consulta paginada
+        const result = await ProductoModel.paginate({}, options);
         
         // Buscar un carrito existente o crear uno nuevo
         let cart = await cartModel.findOne();
@@ -21,10 +30,23 @@ router.get('/productos', async (req, res) => {
             cart = await cartModel.create({ productos: [] });
         }
 
-        // Pasar los productosy ID del carrito a la vista
+        // Crear enlaces de paginación
+        const baseUrl = '/productos';
+        const prevLink = result.hasPrevPage ? `${baseUrl}?page=${result.prevPage}` : null;
+        const nextLink = result.hasNextPage ? `${baseUrl}?page=${result.nextPage}` : null;
+
+        // Renderizar vista con datos de paginación
         res.render('productos', {
-            productos,
-            cartId: cart._id.toString() 
+            productos: result.docs,
+            cartId: cart._id.toString(),
+            hasPrevPage: result.hasPrevPage,
+            hasNextPage: result.hasNextPage,
+            prevPage: result.prevPage,
+            nextPage: result.nextPage,
+            currentPage: result.page,
+            totalPages: result.totalPages,
+            prevLink,
+            nextLink
         });
 
     } catch (error) {
@@ -32,6 +54,27 @@ router.get('/productos', async (req, res) => {
         res.render('error', { error: 'Error al cargar los productos' });
     }
 });
+// router.get('/productos', async (req, res) => {
+//     try {
+//         const productos = await ProductoModel.find().lean();
+        
+//         // Buscar un carrito existente o crear uno nuevo
+//         let cart = await cartModel.findOne();
+//         if (!cart) {
+//             cart = await cartModel.create({ productos: [] });
+//         }
+
+//         // Pasar los productosy ID del carrito a la vista
+//         res.render('productos', {
+//             productos,
+//             cartId: cart._id.toString() 
+//         });
+
+//     } catch (error) {
+//         console.error('Error:', error);
+//         res.render('error', { error: 'Error al cargar los productos' });
+//     }
+// });
 
 
 

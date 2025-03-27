@@ -43,3 +43,23 @@
     <a href="/productos/nuevo" class="btn btn-agregar">Agregar Nuevo Producto</a>
   </div>
 </div>
+
+
+<div class="paginacion">
+    {{#if hasPrevPage}}
+      <a href="{{prevLink}}" class="btn btn-ver">← Anterior</a>
+    {{/if}}
+
+    <span class="pagina-actual">
+      Página {{currentPage}} de {{totalPages}}
+    </span>
+
+    {{#if hasNextPage}}
+      <a href="{{nextLink}}" class="btn btn-ver">Siguiente →</a>
+    {{/if}}
+  </div>
+
+  <div class="acciones-principales">
+    <a href="/productos/nuevo" class="btn btn-agregar">Agregar Nuevo Producto</a>
+  </div>
+</div>
