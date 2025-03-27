@@ -14,7 +14,7 @@ router.get('/productos/nuevo', async (req,res)=>{
 router.get('/productos', async (req, res) => {
     try {
         // Obtener parámetros de query
-        const { page = 1, limit = 6 } = req.query;
+        const { page = 1, limit = 4 } = req.query;
         const options = {
             page: parseInt(page),
             limit: parseInt(limit),
