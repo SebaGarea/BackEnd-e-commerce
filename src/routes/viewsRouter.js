@@ -14,7 +14,7 @@ router.get('/productos/nuevo', async (req,res)=>{
 router.get('/productos', async (req, res) => {
     try {
         // Obtener parámetros de query
-        const { page = 1, limit = 8 } = req.query;
+        const { page = 1, limit = 6 } = req.query;
         const options = {
             page: parseInt(page),
             limit: parseInt(limit),
@@ -22,7 +22,7 @@ router.get('/productos', async (req, res) => {
         };
 
         // Realizar consulta paginada
-        const result = await ProductoModel.paginate({}, options);
+        const infoPaginate = await ProductoModel.paginate({}, options);
         
         // Buscar un carrito existente o crear uno nuevo
         let cart = await cartModel.findOne();
@@ -30,21 +30,21 @@ router.get('/productos', async (req, res) => {
             cart = await cartModel.create({ productos: [] });
         }
 
-        // Crear enlaces de paginación
+        
         const baseUrl = '/productos';
-        const prevLink = result.hasPrevPage ? `${baseUrl}?page=${result.prevPage}` : null;
-        const nextLink = result.hasNextPage ? `${baseUrl}?page=${result.nextPage}` : null;
+        const prevLink = infoPaginate.hasPrevPage ? `${baseUrl}?page=${infoPaginate.prevPage}` : null;
+        const nextLink = infoPaginate.hasNextPage ? `${baseUrl}?page=${infoPaginate.nextPage}` : null;
 
-        // Renderizar vista con datos de paginación
+        
         res.render('productos', {
-            productos: result.docs,
+            productos: infoPaginate.docs,
             cartId: cart._id.toString(),
-            hasPrevPage: result.hasPrevPage,
-            hasNextPage: result.hasNextPage,
-            prevPage: result.prevPage,
-            nextPage: result.nextPage,
-            currentPage: result.page,
-            totalPages: result.totalPages,
+            hasPrevPage: infoPaginate.hasPrevPage,
+            hasNextPage: infoPaginate.hasNextPage,
+            prevPage: infoPaginate.prevPage,
+            nextPage: infoPaginate.nextPage,
+            currentPage: infoPaginate.page,
+            totalPages: infoPaginate.totalPages,
             prevLink,
             nextLink
         });
