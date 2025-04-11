@@ -1,8 +1,8 @@
 import {Router} from 'express';
-import ProductoModel from '../models/product.model.js';
-import cartModel from '../models/cart.model.js';
+import ProductoModel from '../dao/models/product.model.js';
+import cartModel from '../dao/models/cart.model.js';
 
-const router = Router();
+export const router = Router();
 
 // Ruta para mostrar el formulario de nuevo producto
 router.get('/productos/nuevo', async (req,res)=>{
@@ -54,29 +54,6 @@ router.get('/productos', async (req, res) => {
         res.render('error', { error: 'Error al cargar los productos' });
     }
 });
-// router.get('/productos', async (req, res) => {
-//     try {
-//         const productos = await ProductoModel.find().lean();
-        
-//         // Buscar un carrito existente o crear uno nuevo
-//         let cart = await cartModel.findOne();
-//         if (!cart) {
-//             cart = await cartModel.create({ productos: [] });
-//         }
-
-//         // Pasar los productosy ID del carrito a la vista
-//         res.render('productos', {
-//             productos,
-//             cartId: cart._id.toString() 
-//         });
-
-//     } catch (error) {
-//         console.error('Error:', error);
-//         res.render('error', { error: 'Error al cargar los productos' });
-//     }
-// });
-
-
 
 
 //Ruta para mostrar un producto por su :cod
@@ -137,4 +114,3 @@ router.get('/cart/:cid', async (req, res) => {
 });
 
 
-export default router;

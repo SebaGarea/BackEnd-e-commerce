@@ -8,10 +8,12 @@ const __dirname = dirname(__filename);
 dotenv.config({ path: dirname(__dirname) + '/../.env' });
 
 if (!process.env.MONGO_URL) {
-    throw new Error('La variable MONGO_URL no está definida en el archivo .env');
+    throw new Error('La variable MONGO_URL no está definida en el archivo .config');
 }
 
 export const config = {
     PORT: process.env.PORT || 8080,
-    MONGO_URL: process.env.MONGO_URL
+    MONGO_URL: process.env.MONGO_URL,
+    DB_NAME: "Entrega",
+    SECRET: "CoderCoder123"
 };

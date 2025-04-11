@@ -1,8 +1,8 @@
 import { Router } from "express";
 import {uploader} from "../utilsMulter.js";
-import ProductoModel from "../models/product.model.js";
+import ProductoModel from "../dao/models/product.model.js";
 
-const router = Router();
+export const router = Router();
 
 // Metodo Get Raiz
 router.get("/", async (req, res) => {
@@ -137,4 +137,4 @@ router.delete("/:pid", async (req, res) => {
     }
 });
 
-export default router;
+

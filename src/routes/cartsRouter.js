@@ -1,7 +1,8 @@
 import { Router } from "express";
-import cartModel from '../models/cart.model.js';
-import ProductoModel from '../models/product.model.js';
-const router = Router();
+import cartModel from '../dao/models/cart.model.js';
+import ProductoModel from '../dao/models/product.model.js';
+
+export const router = Router();
 
 // Metodo POST Raiz
 router.post("/", async (req, res) => {
@@ -156,4 +157,4 @@ router.delete('/:cid/producto/:pid', async (req, res) => {
     }
 });
 
-export default router;
+
