@@ -5,7 +5,7 @@ import { Strategy as JWTStrategy } from 'passport-jwt';
 import { cookieExtractor } from '../utilsFile.js'; 
 import { config } from './config.js';
 
-import { UsuariosManagerMongo as UserManager } from "../dao/UsuariosMongoManager.js";
+import { UsuariosDAOMongo as UserManager } from "../dao/UsuariosDAOMongo.js";
 import { generaHash, validaHash } from "../utilsFile.js";
 
 export const iniciarPassport = () => {

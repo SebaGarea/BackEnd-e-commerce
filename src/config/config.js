@@ -15,5 +15,5 @@ export const config = {
     PORT: process.env.PORT || 8080,
     MONGO_URL: process.env.MONGO_URL,
     DB_NAME: "Entrega",
-    SECRET: "CoderCoder123"
+    SECRET: process.env.SECRET
 };

@@ -68,3 +68,4 @@ router.get('/current', passport.authenticate('current', { session: false }), (re
         usuario: req.user
     });
 });
+
