@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import ProductoModel from '../dao/models/product.model.js';
+import {ProductoModel} from '../dao/models/product.model.js';
 import cartModel from '../dao/models/cart.model.js';
 
 export const router = Router();

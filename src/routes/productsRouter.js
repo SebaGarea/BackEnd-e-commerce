@@ -1,28 +1,12 @@
 import { Router } from "express";
 import {uploader} from "../utilsMulter.js";
-import ProductoModel from "../dao/models/product.model.js";
+import {ProductoModel} from "../dao/models/product.model.js";
+import ProductosController from "../controllers/products.controller.js";
 
 export const router = Router();
 
 // Metodo Get Raiz
-router.get("/", async (req, res) => {
-  try {
-    // Realizar consulta simple de todos los productos
-    const productos = await ProductoModel.find().lean();
-
-    res.json({
-      status: "success",
-      payload: productos
-    });
-
-  } catch (error) {
-    console.error("Error al obtener productos:", error);
-    res.status(500).json({
-      status: "error",
-      error: "Error al obtener los productos"
-    });
-  }
-});
+router.get("/", ProductosController.getProductos);
 
 
 
