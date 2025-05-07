@@ -5,12 +5,8 @@ import ProductosController from "../controllers/products.controller.js";
 
 export const router = Router();
 
-// Metodo Get Raiz
+
 router.get("/", ProductosController.getProductos);
-
-
-
-// Metodo GET id
 router.get("/:cod", ProductosController.getProductosById);
 
 
