@@ -8,10 +8,7 @@ export default class ProductosController {
       const productos = await productosService.getProductos();
       const productosDTO = ProductoDTO.fromArray(productos);
 
-      res.setHeader("Content-Type", "application/json");
-      return res
-        .status(200)
-        .json({ status: "succes", productos: productosDTO });
+      return res.render("productos", {productos: productosDTO});
     } catch (error) {
       console.error("Error al obtener productos:", error);
       res.status(500).json({
