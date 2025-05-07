@@ -11,17 +11,7 @@ router.get("/", ProductosController.getProductos);
 
 
 // Metodo GET id
-router.get("/:cod", async (req, res) => {
-    try {
-      const producto = await ProductoModel.findOne({ cod: req.params.cod });
-      if (!producto) {
-        res.render("error", { error: "Producto no encontrado" });
-      }
-      res.render("producto", { producto: producto.toObject() });
-    } catch (error) {
-      return res.render("error", { error: "Error al obtener el producto" });
-    }
-  });
+router.get("/:cod", ProductosController.getProductosById);
 
 
 

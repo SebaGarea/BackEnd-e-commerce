@@ -11,7 +11,9 @@ export class ProductosDAOMongo{
         return ProductoModel.find().lean();
     }
 
-
+    static getById(cod){
+        return  ProductoModel.findOne({ cod }).lean();
+    }
 
 
 

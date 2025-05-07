@@ -11,6 +11,9 @@ class ProductosService{
         return await this.productosDAO.getAll();
     }
 
+    async getProductosById(cod){
+        return await this.productosDAO.getById(cod);
+    }
 
 }
 
