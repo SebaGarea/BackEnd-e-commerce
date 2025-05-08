@@ -15,6 +15,15 @@ class ProductosService{
         return await this.productosDAO.getById(cod);
     }
 
+
+    async createProducto(productData) {
+        try {
+            return await this.productosDAO.create(productData);
+        } catch (error) {
+            throw new Error(`Error en servicio al crear producto: ${error.message}`);
+        }
+    }
+
 }
 
 

@@ -40,4 +40,31 @@ export default class ProductosController {
           error: "Error al obtener el producto" });
     }
   }
+
+
+static async postProductos(req, res){
+  try {
+     
+    const productData = new ProductoDTO({
+      ...req.body,
+      thumbnail: req.file ? req.file.filename : undefined
+  });
+   
+    productData.validate();
+
+    const newProduct = await productosService.createProducto(productData);
+
+
+
+      res.redirect('/productos');
+  } catch (error) {
+      console.error('Error al crear producto:', error);
+      res.render("error", { 
+          error: "Error al crear el producto: " + error.message 
+      });
+  }
+}
+
+
+
 }

@@ -8,34 +8,11 @@ export const router = Router();
 
 router.get("/", ProductosController.getProductos);
 router.get("/:cod", ProductosController.getProductosById);
+router.post("/", uploader.single("file"), ProductosController.postProductos);
 
 
 
-// Metodo POST Raiz
-router.post("/", uploader.single("file"), async (req, res) => {
-    try {
-        const productData = {
-            ...req.body,
-            status: req.body.status === 'true',
-            stock: parseInt(req.body.stock),
-            precio: parseFloat(req.body.precio)
-        };
 
-        if (req.file) {
-            productData.thumbnail = req.file.filename;
-        }
-
-        const newProduct = new ProductoModel(productData);
-        await newProduct.save();
-
-        res.redirect('/productos');
-    } catch (error) {
-        console.error('Error al crear producto:', error);
-        res.render("error", { 
-            error: "Error al crear el producto: " + error.message 
-        });
-    }
-});
 
 
 
