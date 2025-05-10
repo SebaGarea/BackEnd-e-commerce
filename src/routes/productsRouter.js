@@ -9,10 +9,7 @@ export const router = Router();
 router.get("/", ProductosController.getProductos);
 router.get("/:cod", ProductosController.getProductosById);
 router.post("/", uploader.single("file"), ProductosController.postProductos);
-
-
-
-
+router.delete("/:pid", ProductosController.deleteProducto)
 
 
 
@@ -52,36 +49,6 @@ router.put('/:pid', uploader.single('file'), async (req, res) => {
 
 
 // Metodo DELETE :pid
-router.delete("/:pid", async (req, res) => {
-    try {
-        const productoId = req.params.pid;
 
-        // Buscamos y eliminamos el producto
-        const deletedProducto = await ProductoModel.findByIdAndDelete(productoId);
-
-        // Verificamos si el producto existía
-        if (!deletedProducto) {
-            return res.status(404).json({
-                status: "error",
-                message: "Producto no encontrado"
-            });
-        }
-
-        // Respondemos con éxito
-        res.json({
-            status: "success",
-            message: "Producto eliminado exitosamente",
-            deletedProducto
-        });
-
-    } catch (error) {
-        console.error('Error al eliminar el producto:', error);
-        res.status(500).json({
-            status: "error",
-            message: "Error al eliminar el producto",
-            error: error.message
-        });
-    }
-});
 
 
