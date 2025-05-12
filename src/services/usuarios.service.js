@@ -31,7 +31,15 @@ class UsuariosService {
     return await this.usuariosDAO.update(id, datosActualizados);
   }
 
-  //falta hacer el delete usuarios
+  async delete(id){
+    if (!isValidObjectId(id)) {
+        res.setHeader("Content-Type", "application/json");
+        return res
+          .status(400)
+          .json({ error: `Indique un id de tipo Id MongoDB` });
+      }
+      return await this.usuariosDAO.delete(id);
+  }
 
 }
 

@@ -29,4 +29,8 @@ export class UsuariosDAOMongo {
       .findByIdAndUpdate(id, { $set: datosActualizados }, { new: true })
       .lean();
   }
+
+  static delete(id){
+    return usuariosModelo.findByIdAndDelete(id);
+  }
 }

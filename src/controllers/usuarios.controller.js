@@ -76,4 +76,25 @@ export default class UsuariosController {
         .json({ error: `Error al actualizar el usuario: ${error.message}` });
     }
   }
+
+  static async deleteUsuario(req, res){
+    let {id} = req.params;
+    try {
+      let usuario = await usuariosService.delete(id);
+      let usuarioDTO = UsuarioDTO.fromObject(usuario)
+
+      res.setHeader('Content-Type','application/json');
+      return res.status(200).json({payload:"succes", usuario:usuarioDTO});
+    } catch (error) {
+      console.log(error);
+      res.setHeader('Content-Type','application/json');
+      return res.status(500).json(
+        {
+          error:`Error al eliminar al Usuario en el Controller`,
+          detalle:`${error.message}`
+        }
+      )
+      
+    }
+  }
 }
