@@ -49,7 +49,7 @@ router.get('/logout', (req, res) => {
 
 router.get("/error", (req, res)=>{
     res.setHeader('Content-Type','application/json');
-    return res.status(401).json({error:`Error en la operación`})
+    return res.status(401).json({error: `Error en la operación: Registro fallido. Verifica los datos enviados.`})
 })
 
 

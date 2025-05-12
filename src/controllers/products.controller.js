@@ -7,7 +7,6 @@ export default class ProductosController {
       const productos = await productosService.getProductos();
       const productosDTO = ProductoDTO.fromArray(productos);
 
-      
       if (
         req.headers.accept &&
         req.headers.accept.includes("application/json")
@@ -47,6 +46,17 @@ export default class ProductosController {
       }
 
       const productoDTO = ProductoDTO.fromObject(producto);
+
+      if (
+        req.headers.accept &&
+        req.headers.accept.includes("application/json")
+      ) {
+        return res.json({
+          status: "success",
+          message: "Producto encontrado",
+          producto: productoDTO,
+        });
+      }
 
       return res.render("producto", { producto: productoDTO });
     } catch (error) {
@@ -123,8 +133,11 @@ export default class ProductosController {
 
       const productoDTO = ProductoDTO.fromObject(updatedProducto);
 
-      if (req.headers.accept && req.headers.accept.includes("application/json")) {
-       return res.json({
+      if (
+        req.headers.accept &&
+        req.headers.accept.includes("application/json")
+      ) {
+        return res.json({
           status: "success",
           message: "Producto actualizado exitosamente",
           producto: productoDTO,
@@ -132,13 +145,15 @@ export default class ProductosController {
       }
 
       return res.redirect("/productos");
-
     } catch (error) {
-      if (req.headers.accept && req.headers.accept.includes("application/json")){
+      if (
+        req.headers.accept &&
+        req.headers.accept.includes("application/json")
+      ) {
         return res.status(500).json({
           status: "error",
           error: "Error al Actualizar el producto en controller",
-        });        
+        });
       }
       return res.render("error", { error: "Error al actulizar el producto" });
     }

@@ -2,8 +2,13 @@ import { usuariosModelo } from "./models/user.model.js";
 
 export class UsuariosDAOMongo {
   static create(usuario) {
-    let nuevoUsuario = usuariosModelo.create(usuario);
-    return nuevoUsuario.toJSON();
+    try{
+      let nuevoUsuario = usuariosModelo.create(usuario);
+      return nuevoUsuario
+    }catch(error){
+      throw new Error(`Error al crear usuarios en DB: ${error.message}`)
+    }
+    
   }
 
   static getBy(filtro) {

@@ -1,5 +1,5 @@
 import { ProductosDAOMongo as ProductosDAO } from "../dao/ProductosDAOMongo.js";
-import mongoose from "mongoose";
+
 
 class ProductosService {
   constructor(dao) {

@@ -22,6 +22,7 @@ export const iniciarPassport = () => {
 
           let existe = await UserManager.getBy({ email: username });
           if (existe) {
+            console.error("El usuario ya existe")
             return done(null, false);
           }
 
@@ -34,8 +35,10 @@ export const iniciarPassport = () => {
             password
           });
 
+          console.log ("Usuario creado exitosamente:", nuevoUsuario)
           return done(null, nuevoUsuario);
         } catch (error) {
+          console.log("Error en la estrategia de registro:", error);
           return done(error);
         }
       }

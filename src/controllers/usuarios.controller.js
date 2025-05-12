@@ -13,6 +13,7 @@ export default class UsuariosController {
         status: "succes",
         usuarios: usuariosDTO,
       });
+
     } catch (error) {
       res.setHeader("Content-Type", "application/json");
       return res
@@ -24,19 +25,13 @@ export default class UsuariosController {
   static async getUsuariosById(req, res) {
     let { id } = req.params;
 
-    if (!isValidObjectId(id)) {
-      res.setHeader("Content-Type", "application/json");
-      return res
-        .status(400)
-        .json({ error: `Indique un id de tipo Id MongoDB` });
-    }
-
     try {
       let usuario = await usuariosService.getUsuariosById(id);
       let usuarioDTO = UsuarioDTO.fromObject(usuario);
 
       res.setHeader("Content-Type", "application/json");
       return res.status(200).json({ succes: "succes", usuario: usuarioDTO });
+      
     } catch (error) {
       res.setHeader("Content-Type", "application/json");
       return res.status(500).json({ error: `${error.message}` });
