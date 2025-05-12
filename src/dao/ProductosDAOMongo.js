@@ -42,4 +42,17 @@ export class ProductosDAOMongo {
       throw new Error(`Error al eliminar el producto en DB: ${error.message}`);
     }
   }
+
+
+  static async update(productoId, updateFields){
+    try {
+     
+      const updateProducto = await ProductoModel.findOneAndUpdate({cod:productoId}, updateFields,{ new: true, runValidators: true });
+
+      return updateProducto;
+      
+    } catch (error) {
+      throw new Error(`Error al editar el producto en DB: ${error.message}`);
+    }
+  }
 }

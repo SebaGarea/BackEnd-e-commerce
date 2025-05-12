@@ -19,7 +19,7 @@ import {router as viewsRouter} from './routes/viewsRouter.js';
 import {router as sessionsRouter} from './routes/sessionsRouter.js'; 
 import{router as userRouter} from './routes/usersRouter.js'
 
-//inicializamos express
+
 const app = express();
 
 

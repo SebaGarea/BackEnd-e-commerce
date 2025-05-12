@@ -1,4 +1,5 @@
 import { ProductosDAOMongo as ProductosDAO } from "../dao/ProductosDAOMongo.js";
+import mongoose from "mongoose";
 
 class ProductosService {
   constructor(dao) {
@@ -23,16 +24,45 @@ class ProductosService {
 
   async deleteProducto(productoId) {
     try {
-      const deletedProducto = await this.productosDAO.deleteProducto(productoId);
+      const deletedProducto = await this.productosDAO.deleteProducto(
+        productoId
+      );
 
       if (!deletedProducto) {
         throw new Error(`Producto con ID ${productoId} no encontrado`);
-    }
-    return deletedProducto;
-
+      }
+      return deletedProducto;
     } catch (error) {
       throw new Error(
         `Error al eliminar el producto en service${error.message}`
+      );
+    }
+  }
+
+  async updateProducto(productoId, updateFields) {
+    try {
+      if (!productoId) {
+            throw new Error(`El ID proporcionado (${productoId}) no es válido`);
+        }
+
+      if (Object.keys(updateFields).length === 0) {
+            throw new Error("No se proporcionaron campos para actualizar");
+        }
+
+      const updatedProducto = await this.productosDAO.update(
+        productoId,
+        updateFields
+      );
+
+      if (!updatedProducto) {
+        throw new Error(`Producto con ID ${productoId} no encontrado`);
+      }
+      return updatedProducto;
+
+    } catch (error) {
+      console.error("Error al actualizar el producto en service:", error);
+      throw new Error(
+        `Error al actualizar el producto en service: ${error.message}`
       );
     }
   }
