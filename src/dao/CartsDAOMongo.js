@@ -75,13 +75,13 @@ export class CartsDAOMongo {
     }
   }
 
-  async deleteProductFromCart(cartId, productoId) {
+  async deleteProductFromCart(cid, pid) {
     try {
-      const cart = await cartModel.findById(cartId);
+      const cart = await cartModel.findById(cid);
       if (!cart) return null;
 
       cart.productos = cart.productos.filter(
-        (item) => item.producto.toString() !== productoId
+        (item) => item.producto.toString() !== pid
       );
 
       await cart.save();

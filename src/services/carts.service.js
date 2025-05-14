@@ -26,7 +26,7 @@ export const addProductoToCartService = async(cid, pid) =>{
     return addProductoToCart;
 }
 
-export const deleteProductFromCartService = async (cartId, productoId)=>{
-    const deleteProductFromCart = await cartsDAO.deleteProductFromCart(cartId, productoId);
+export const deleteProductFromCartService = async (cid, pid)=>{
+    const deleteProductFromCart = await cartsDAO.deleteProductFromCart(cid , pid);
     return deleteProductFromCart;
 }
