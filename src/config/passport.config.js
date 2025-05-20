@@ -15,7 +15,7 @@ export const iniciarPassport = () => {
       { usernameField: "email", passReqToCallback: true },
       async (req, username, password, done) => {
         try {
-          let { first_name, last_name, age } = req.body;
+          let { first_name, last_name, age, role } = req.body;
           if (!first_name || !last_name || !age) {
             return done(null, false);
           }
@@ -32,7 +32,8 @@ export const iniciarPassport = () => {
             last_name,
             email: username,
             age,
-            password
+            password,
+            role: role|| 'user'
           });
 
           console.log ("Usuario creado exitosamente:", nuevoUsuario)

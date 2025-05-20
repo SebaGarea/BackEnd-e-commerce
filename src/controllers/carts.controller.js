@@ -1,9 +1,8 @@
-import {
-  addProductoToCartService,createService,deleteProductFromCartService,getAllService,getCartByIdService} from "../services/carts.service.js";
+import { cartsService } from "../services/carts.service.js";
 
 export const createController = async (req, res) => {
   try {
-    const nuevoCart = await createService();
+    const nuevoCart = await cartsService.createService();
 
     res.status(201).json({
       status: "success",
@@ -21,7 +20,7 @@ export const createController = async (req, res) => {
 
 export const getController = async (req, res) => {
   try {
-    const getCarts = await getAllService();
+    const getCarts = await cartsService.getAllService();
     res.status(201).json({
       status: "success",
       message: "Carritos Obtenidos",
@@ -39,7 +38,7 @@ export const getController = async (req, res) => {
 export const getCartIdController = async (req, res) => {
   try {
     const cartId = req.params.cid;
-    const cart = await getCartByIdService(cartId);
+    const cart = await cartsService.getCartByIdService(cartId);
 
     if (!cart) {
       return res.status(404).json({
@@ -66,7 +65,7 @@ export const addProductController = async (req, res) => {
   try {
     const { cid, pid } = req.params;
 
-    const updatedCart = await addProductoToCartService(cid, pid);
+    const updatedCart = await cartsService.addProductoToCartService(cid, pid);
 
     if (!updatedCart) {
       return res.status(404).json({
@@ -108,7 +107,7 @@ export const deleteProductFromCartController = async (req, res) => {
   try {
     const { cid, pid } = req.params;
 
-    const cart = await deleteProductFromCartService(cid, pid);
+    const cart = await cartsService.deleteProductFromCartService(cid, pid);
 
     if (!cart) {
       if (

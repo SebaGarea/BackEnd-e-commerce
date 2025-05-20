@@ -79,15 +79,23 @@ export default class ProductosController {
 
       const newProduct = await productosService.createProducto(productData);
 
+     
+        // return res.json({
+        //   status: "success",
+        //   message: "Producto creado",
+        //   producto: newProduct,
+        // });
+      
       res.redirect("/productos");
+
     } catch (error) {
+      console.error(error)
       console.error("Error al crear producto:", error);
       res.render("error", {
         error: "Error al crear el producto: " + error.message,
       });
     }
   }
-
   static async deleteProducto(req, res) {
     try {
       const productoId = req.params.pid;

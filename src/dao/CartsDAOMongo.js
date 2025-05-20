@@ -46,7 +46,7 @@ export class CartsDAOMongo {
         };
       }
 
-      const producto = await ProductoModel.findOne({ cod:pid }).lean();
+      const producto = await ProductoModel.findOne({ cod: pid }).lean();
       if (!producto) {
         return res.status(404).json({
           status: "error",
@@ -92,4 +92,16 @@ export class CartsDAOMongo {
       );
     }
   }
+
+  // async findOne(){
+  //   return await cartModel.findOne()
+  // }
+
+  // async create(cart) {
+  //       return await cartModel.create(cart);
+  //   }
+
+  //   async findById(id) {
+  //       return await cartModel.findById(id).populate('productos.producto').lean();
+  //   }
 }

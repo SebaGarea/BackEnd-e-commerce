@@ -16,3 +16,28 @@ export const auth = (req, res, next) => {
         return res.status(401).json({ error: `Error de autenticación: ${error.message}` });
     }
 };
+
+
+export const autorizeAdmin = (req, res, next) => {
+    if (!req.user) {
+        return res.status(401).json({ error: 'No autenticado' });
+    }
+    
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'No autorizado - Solo administradores' });
+    }
+    
+    next();
+};
+
+export const autorizeUser = (req, res, next) => {
+    if (!req.user) {
+        return res.status(401).json({ error: 'No autenticado' });
+    }
+    
+    if (req.user.role !== 'user') {
+        return res.status(403).json({ error: 'No autorizado - Solo usuarios' });
+    }
+    
+    next();
+};

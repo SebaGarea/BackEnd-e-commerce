@@ -45,7 +45,7 @@ app.use(passport.initialize());
 
 
 //Implementamos los router que creamos
-app.use('/api/productos', productsRouter);
+app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/api/sessions', sessionsRouter);
 app.use('/', viewsRouter);

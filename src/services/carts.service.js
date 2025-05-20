@@ -1,32 +1,49 @@
 import { CartsDAOMongo as CartsDAO } from "../dao/CartsDAOMongo.js"
 
 
-const cartsDAO = new CartsDAO();
 
-export const createService = async() =>{
-    const nuevoCart= await cartsDAO.createCart();
-    return nuevoCart;
+
+class CartsService{
+    constructor(dao){
+        this.cartsDAO = new dao();
+    }
+
+    async createService(){
+        const nuevoCart= await this.cartsDAO.createCart();
+        return nuevoCart;
+    }
+
+    async getAllService(){
+        const getAllCarts = await this.cartsDAO.getCarts()
+        return getAllCarts;
+    }
+
+    async getCartByIdService(cartId){
+        const getCartById = await this.cartsDAO.getCartById(cartId);
+        return getCartById;
+    }
+
+
+    async addProductoToCartService(cid, pid){
+        const addProductoToCart= await this.cartsDAO.addProductoToCart(cid,pid);
+        return addProductoToCart;
+    }
+
+
+    async deleteProductFromCartService(cid, pid){
+        const deleteProductFromCart = await this.cartsDAO.deleteProductFromCart(cid , pid);
+        return deleteProductFromCart;
+    }
+    
+    async getOrCreateCart(){
+        const cart = await this.cartsDAO.findOne();
+            if (!cart) {
+                return await this.cartsDAO.create({ productos: [] });
+            }
+        return cart;
+    }
+
+
 }
 
-
-export const getAllService = async () =>{
-    const getAllCarts = await cartsDAO.getCarts()
-    return getAllCarts;
-}
-
-
-export const getCartByIdService = async (cartId) =>{
-    const getCartById = await cartsDAO.getCartById(cartId);
-    return getCartById;
-}
-
-
-export const addProductoToCartService = async(cid, pid) =>{
-    const addProductoToCart= await cartsDAO.addProductoToCart(cid,pid);
-    return addProductoToCart;
-}
-
-export const deleteProductFromCartService = async (cid, pid)=>{
-    const deleteProductFromCart = await cartsDAO.deleteProductFromCart(cid , pid);
-    return deleteProductFromCart;
-}
+export const cartsService = new CartsService(CartsDAO)

@@ -18,6 +18,7 @@ class ProductosService {
     try {
       return await this.productosDAO.create(productData);
     } catch (error) {
+      console.error(error)
       throw new Error(`Error en servicio al crear producto: ${error.message}`);
     }
   }

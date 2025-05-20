@@ -5,6 +5,7 @@ export class UsuarioDTO{
         this.age = usuario.age;
         this.rol = usuario.role;
         this.cart = usuario.cart;
+        // this.id = usuario._id?.toString();
     }
 
     static fromObject(usuarioObj){

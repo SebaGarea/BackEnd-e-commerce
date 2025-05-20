@@ -6,7 +6,7 @@ import { currentController, errorController, perfilController, loginController, 
 
 export const router=Router()
 
-router.post('/registro', passport.authenticate("registro", {session: false, failureRedirect: '/api/sessions/error'}),registroController)
+router.post('/register', passport.authenticate("registro", {session: false, failureRedirect: '/api/sessions/error'}),registroController)
 router.post('/login', passport.authenticate('login', { session: false, failureRedirect: '/api/sessions/error' }),loginController)
 router.get('/logout', logoutController );
 router.get('/current', passport.authenticate('current', { session: false }), currentController);
