@@ -10,8 +10,8 @@ class ProductosService {
     return await this.productosDAO.getAll();
   }
 
-  async getProductosById(cod) {
-    return await this.productosDAO.getById(cod);
+  async getProductosById(id) {
+    return await this.productosDAO.findById(id);
   }
 
   async createProducto(productData) {

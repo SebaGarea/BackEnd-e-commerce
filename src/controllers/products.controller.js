@@ -37,9 +37,9 @@ export default class ProductosController {
 
   static async getProductosById(req, res) {
     try {
-      const { cod } = req.params;
+      const { id } = req.params;
 
-      const producto = await productosService.getProductosById(cod);
+      const producto = await productosService.getProductosById(id);
 
       if (!producto) {
         return res.render("error", { error: "Producto no encontrado" });
@@ -69,38 +69,93 @@ export default class ProductosController {
   }
 
   static async postProductos(req, res) {
-    try {
-      const productData = new ProductoDTO({
+  try {
+    let productData;
+
+    // Si los datos vienen en JSON (sin archivo)
+    if (!req.file) {
+      productData = req.body;
+    } else {
+      // Si los datos vienen como form-data con un archivo
+      productData = {
         ...req.body,
-        thumbnail: req.file ? req.file.filename : undefined,
-      });
+        thumbnail: req.file.filename, // Guardar el nombre del archivo subido
+      };
+    }
 
-      productData.validate();
+    // Validar que todos los campos requeridos estén presentes
+    if (
+      !productData.title ||
+      !productData.code ||
+      !productData.price ||
+      !productData.stock ||
+      !productData.description ||
+      !productData.category ||
+      productData.status === undefined
+    ) {
+      return res.status(400).json({ error: "Faltan campos requeridos" });
+    }
 
-      const newProduct = await productosService.createProducto(productData);
+    // Crear el producto en la base de datos
+    const newProduct = await productosService.createProducto(productData);
+
+    res.status(201).json({
+      status: "success",
+      message: "Producto creado exitosamente",
+      producto: newProduct,
+    });
+  } catch (error) {
+    console.error("Error al crear producto:", error);
+    res.status(500).json({
+      status: "error",
+      message: "Error al crear el producto",
+      error: error.message,
+    });
+  }
+}
+  // static async postProductos(req, res) {
+  //   try {
+  //     const productData = new ProductoDTO({
+  //       ...req.body,
+  //       thumbnail: req.file ? req.file.filename : undefined,
+  //     });
+
+  //     productData.validate();
+
+  //     const newProduct = await productosService.createProducto(productData);
 
      
-        // return res.json({
-        //   status: "success",
-        //   message: "Producto creado",
-        //   producto: newProduct,
-        // });
+  //       // return res.json({
+  //       //   status: "success",
+  //       //   message: "Producto creado",
+  //       //   producto: newProduct,
+  //       // });
       
-      res.redirect("/productos");
+  //     res.redirect("/productos");
 
-    } catch (error) {
-      console.error(error)
-      console.error("Error al crear producto:", error);
-      res.render("error", {
-        error: "Error al crear el producto: " + error.message,
-      });
-    }
-  }
+  //   } catch (error) {
+  //     console.error(error)
+  //     console.error("Error al crear producto:", error);
+  //     res.render("error", {
+  //       error: "Error al crear el producto: " + error.message,
+  //     });
+  //   }
+  // }
+
+
+
   static async deleteProducto(req, res) {
     try {
       const productoId = req.params.pid;
 
       const deletedProducto = await productosService.deleteProducto(productoId);
+
+      if (!deletedProducto) {
+      return res.status(404).json({
+        status: "error",
+        message: `Producto con ID ${productoId} no encontrado`,
+      });
+    }
       const productoDTO = ProductoDTO.fromObject(deletedProducto);
 
       res.json({

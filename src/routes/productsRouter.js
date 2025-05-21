@@ -7,7 +7,7 @@ import { autorizeAdmin } from "../middleware/auth.js";
 export const router = Router();
 
 router.get("/", ProductosController.getProductos);
-router.get("/:cod", ProductosController.getProductosById);
+router.get("/:id", ProductosController.getProductosById);
 
 router.post(
   "/",
@@ -16,6 +16,7 @@ router.post(
   uploader.single("file"),
   ProductosController.postProductos
 );
+
 
 router.delete(
   "/:pid",

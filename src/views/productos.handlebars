@@ -7,7 +7,7 @@
         {{#if this.thumbnail}}
           <img
             src="/img/{{this.thumbnail}}"
-            alt="{{this.nombre}}"
+            alt="{{this.title}}"
             class="producto-imagen"
           />
         {{else}}
@@ -19,16 +19,16 @@
         {{/if}}
 
         <div class="producto-info">
-          <h2 class="producto-titulo">{{this.nombre}}</h2>
-          <p class="producto-codigo">Código: {{this.cod}}</p>
-          <p class="producto-precio">${{this.precio}}</p>
+          <h2 class="producto-titulo">{{this.title}}</h2>
+          <p class="producto-codigo">Código: {{this.code}}</p>
+          <p class="producto-precio">${{this.price}}</p>
 
           <div class="producto-acciones">
-            <a href="/producto/{{this.cod}}" class="btn btn-ver">Ver detalle</a>
-            <a href="/producto/editar/{{this.cod}}"class="btn btn-ver">Editar</a>
+            <a href="/products/{{this.code}}" class="btn btn-ver">Ver detalle</a>
+            <a href="/products/editar/{{this.code}}"class="btn btn-ver">Editar</a>
           </div>
           <div>
-            <form action="/producto/{{this._id}}?_method=DELETE"method="POST"class="form-eliminar"            >
+            <form action="/products/{{this._id}}?_method=DELETE"method="POST"class="form-eliminar"            >
               <button type="submit" class="btn btn-eliminar">Eliminar</button>
             </form>
           </div>
@@ -57,6 +57,6 @@
   </div>
 
   <div class="acciones-principales">
-    <a href="/productos/nuevo" class="btn btn-agregar">Agregar Nuevo Producto</a>
+    <a href="/products/nuevo" class="btn btn-agregar">Agregar Nuevo Producto</a>
   </div>
 </div>

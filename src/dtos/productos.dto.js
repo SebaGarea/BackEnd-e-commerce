@@ -1,20 +1,21 @@
 export class ProductoDTO{
     constructor(producto){
-        this.nombre = producto.nombre;
-        this.cod = parseInt(producto.cod);
-        this.precio = parseFloat(producto.precio);
+        this.title = producto.title;
+        this.code = parseInt(producto.code);
+        this.price = parseFloat(producto.price);
         this.stock = parseInt(producto.stock);
-        this.descripcion = producto.descripcion;
+        this.description = producto.description;
         this.status = producto.status === 'true';
         this.thumbnail = producto.thumbnail;
+        this.category = producto.category;
     }
 
     validate() {
-        if (!this.nombre || !this.precio || !this.stock) {
+        if (!this.title || !this.price || !this.stock) {
             throw new Error('Faltan campos requeridos');
         }
-        if (this.precio <= 0) {
-            throw new Error('El precio debe ser mayor a 0');
+        if (this.price <= 0) {
+            throw new Error('El price debe ser mayor a 0');
         }
         if (this.stock < 0) {
             throw new Error('El stock no puede ser negativo');

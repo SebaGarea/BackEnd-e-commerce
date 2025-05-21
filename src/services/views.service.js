@@ -27,8 +27,8 @@ class ViewsService{
         }
     }
 
-    async getProductByCod(cod) {
-        return await this.productosDAO.getByCod(cod);
+    async getProductByCod(code) {
+        return await this.productosDAO.getByCod(code);
     }
 
     async getProductById(id) {

@@ -19,11 +19,11 @@ export class ProductosDAOMongo {
     }
   }
 
-  static async getByCod(cod) {
+  static async getByCod(code) {
     try {
-      const producto = await ProductoModel.findOne({ cod }).lean();
+      const producto = await ProductoModel.findOne({ code }).lean();
       if (!producto) {
-        throw new Error(`Producto con código ${cod} no encontrado`);
+        throw new Error(`Producto con código ${code} no encontrado`);
       }
       return producto;
     } catch (error) {
@@ -31,9 +31,10 @@ export class ProductosDAOMongo {
     }
   }
 
-  static async deleteProducto(cod) {
+  static async deleteProducto(id) {
     try {
-      const deleteProducto = await ProductoModel.findOneAndDelete({ cod });
+      
+      const deleteProducto = await ProductoModel.findByIdAndDelete(id);
 
       return deleteProducto;
     } catch (error) {
@@ -44,7 +45,7 @@ export class ProductosDAOMongo {
   static async update(productoId, updateFields) {
     try {
       const updateProducto = await ProductoModel.findOneAndUpdate(
-        { cod: productoId },
+        { code: productoId },
         updateFields,
         { new: true, runValidators: true }
       );

@@ -5,10 +5,10 @@
         <div class="cart-items">
             {{#each cart.productos}}
                 <div class="cart-item">
-                    <img src="/img/{{this.producto.thumbnail}}" alt="{{this.producto.nombre}}" class="producto-imagen">
+                    <img src="/img/{{this.producto.thumbnail}}" alt="{{this.producto.title}}" class="producto-imagen">
                     <div class="item-info">
-                        <h3>{{this.producto.nombre}}</h3>
-                        <p>Precio: ${{this.producto.precio}}</p>
+                        <h3>{{this.producto.title}}</h3>
+                        <p>Precio: ${{this.producto.price}}</p>
                         <p>Cantidad: {{this.quantity}}</p>
                     </div>
                     <form

@@ -6,13 +6,14 @@ const {Schema} = mongoose;
 const productosCollection = 'productos'; //Setemao la nueva coleccion de productos
 
 const productosSchema = new Schema({ 
-    nombre:{type:String, required:true},
-    cod:{type:Number, required:true, unique:true},
-    precio:{type:Number, required:true},
+    title:{type:String, required:true},
+    code:{type:Number, required:true, unique:true},
+    price:{type:Number, required:true},
     stock:{type:Number, required:true},
-    descripcion:{type:String, required:true},
+    description:{type:String, required:true},
     status:{type:Boolean, required:true},
-    thumbnail:{type:String}
+    thumbnail:{type:String},
+    category:{type:String, required:true}
      
 })
 

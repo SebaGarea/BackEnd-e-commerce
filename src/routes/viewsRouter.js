@@ -1,5 +1,4 @@
 import {Router} from 'express';
-import cartModel from '../dao/models/cart.model.js';
 import ViewsController from '../controllers/views.controller.js';
 
 export const router = Router();
@@ -8,9 +7,9 @@ router.get('/productos', ViewsController.renderProductos)
 
 router.get('/productos/nuevo', ViewsController.renderNewProducto)
 
-router.get('/producto/:cod', ViewsController.renderProductoByCod)
+router.get('/producto/:code', ViewsController.renderProductoByCod)
 
-router.get('/producto/editar/:cod', ViewsController.renderProductoEdit)
+router.get('/producto/editar/:code', ViewsController.renderProductoEdit)
 
 router.get('/cart/:cid', ViewsController.renderCartCid)
 

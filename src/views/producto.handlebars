@@ -1,28 +1,28 @@
 <div class="productos-container">
     <div class="producto-card">
         <div class="producto-info">
-            <h2 class="producto-titulo">{{producto.nombre}}</h2>
-            <p class="producto-codigo">Código: {{producto.cod}}</p>
+            <h2 class="producto-titulo">{{producto.title}}</h2>
+            <p class="producto-codigo">Código: {{producto.code}}</p>
             
             {{#if producto.thumbnail}}
-                <img src="/img/{{producto.thumbnail}}" alt="{{producto.nombre}}" class="producto-imagen">
+                <img src="/img/{{producto.thumbnail}}" alt="{{producto.title}}" class="producto-imagen">
             {{else}}
                 <img src="/img/no-image.png" alt="Sin imagen" class="producto-imagen">
             {{/if}}
             
-            <p class="producto-precio">${{producto.precio}}</p>
-            <p class="description">{{producto.descripcion}}</p>
+            <p class="producto-precio">${{producto.price}}</p>
+            <p class="description">{{producto.description}}</p>
             
             <form
-        action="/api/carts/{{cartId}}/producto/{{producto._id}}"
+        action="/api/carts/{{cartId}}/products/{{producto._id}}"
         method="POST"
         class="form-agregar-carrito">
         <button type="submit" class="btn btn-agregar">Agregar al carrito</button>
     </form>
             <div class="producto-acciones">
-                <a href="/productos" class="btn btn-ver">Volver al Catálogo</a>
+                <a href="/products" class="btn btn-ver">Volver al Catálogo</a>
 
-                <form action="/producto/{{producto._id}}?_method=DELETE" method="POST" class="form-eliminar">
+                <form action="/products/{{producto._id}}?_method=DELETE" method="POST" class="form-eliminar">
                     <button type="submit" class="btn btn-eliminar">Eliminar</button>
                 </form>
            
