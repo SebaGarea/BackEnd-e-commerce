@@ -190,7 +190,7 @@ export default class ProductosController {
       if (!updatedProducto) {
         return res.status(404).json({
           status: "error",
-          message: "Producto no encontrado",
+          message: `Producto con ID ${pid} no encontrado`,
         });
       }
 

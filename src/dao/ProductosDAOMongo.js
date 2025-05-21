@@ -44,13 +44,13 @@ export class ProductosDAOMongo {
 
   static async update(productoId, updateFields) {
     try {
-      const updateProducto = await ProductoModel.findOneAndUpdate(
-        { code: productoId },
-        updateFields,
-        { new: true, runValidators: true }
-      );
+     const updatedProducto = await ProductoModel.findByIdAndUpdate(
+      productoId, 
+      { $set: updateFields },
+      { new: true, runValidators: true } 
+    );
 
-      return updateProducto;
+      return updatedProducto;
     } catch (error) {
       throw new Error(`Error al editar el producto en DB: ${error.message}`);
     }
