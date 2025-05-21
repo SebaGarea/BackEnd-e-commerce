@@ -24,11 +24,11 @@
           <p class="producto-precio">${{this.price}}</p>
 
           <div class="producto-acciones">
-            <a href="/products/{{this.code}}" class="btn btn-ver">Ver detalle</a>
-            <a href="/products/editar/{{this.code}}"class="btn btn-ver">Editar</a>
+            <a href="/productos/{{this.code}}" class="btn btn-ver">Ver detalle</a>
+            <a href="/productos/editar/{{this.code}}"class="btn btn-ver">Editar</a>
           </div>
           <div>
-            <form action="/products/{{this._id}}?_method=DELETE"method="POST"class="form-eliminar"            >
+            <form action="/productos/{{this._id}}?_method=DELETE"method="POST"class="form-eliminar"            >
               <button type="submit" class="btn btn-eliminar">Eliminar</button>
             </form>
           </div>
@@ -57,6 +57,6 @@
   </div>
 
   <div class="acciones-principales">
-    <a href="/products/nuevo" class="btn btn-agregar">Agregar Nuevo Producto</a>
+    <a href="/productos/nuevo" class="btn btn-agregar">Agregar Nuevo Producto</a>
   </div>
 </div>

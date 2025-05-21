@@ -18,6 +18,7 @@ export default class ProductosController {
       }
 
       return res.render("productos", { productos: productosDTO });
+      
     } catch (error) {
       console.error("Error al obtener productos:", error);
 
@@ -173,6 +174,7 @@ export default class ProductosController {
     }
   }
 
+
   static async updateProducto(req, res) {
     try {
       const { pid } = req.params;
@@ -187,13 +189,21 @@ export default class ProductosController {
         updateFields
       );
 
-      if (!updatedProducto) {
+         if (!updatedProducto) {
+      if (
+        req.headers.accept &&
+        req.headers.accept.includes("application/json")
+      ) {
         return res.status(404).json({
           status: "error",
           message: `Producto con ID ${pid} no encontrado`,
         });
       }
+      return res.render("error", { error: `Producto con ID ${pid} no encontrado` });
+    }
 
+
+    
       const productoDTO = ProductoDTO.fromObject(updatedProducto);
 
       if (
@@ -208,7 +218,9 @@ export default class ProductosController {
       }
 
       return res.redirect("/productos");
+
     } catch (error) {
+      console.error("Error al actualizar el producto:", error);
       if (
         req.headers.accept &&
         req.headers.accept.includes("application/json")

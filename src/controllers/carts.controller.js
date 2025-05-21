@@ -146,3 +146,38 @@ export const deleteProductFromCartController = async (req, res) => {
     });
   }
 };
+
+export const updateCartController = async (req, res) => {
+  try {
+    const { cid } = req.params; 
+    const { products } = req.body; 
+
+    if (!products || !Array.isArray(products)) {
+      return res.status(400).json({
+        status: "error",
+        message: "El cuerpo de la solicitud debe contener un array de productos",
+      });
+    }
+
+    const updatedCart = await cartsService.updateCartService(cid, products);
+
+    if (!updatedCart) {
+      return res.status(404).json({
+        status: "error",
+        message: `Carrito con ID ${cid} no encontrado`,
+      });
+    }
+
+    res.status(200).json({
+      status: "success",
+      message: "Carrito actualizado exitosamente",
+      cart: updatedCart,
+    });
+  } catch (error) {
+    console.error("Error al actualizar el carrito:", error);
+    res.status(500).json({
+      status: "error",
+      message: "Error interno al actualizar el carrito",
+    });
+  }
+};

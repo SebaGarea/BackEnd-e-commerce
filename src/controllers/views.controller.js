@@ -30,7 +30,7 @@ export default class ViewsController {
       });
     } catch (error) {
       res.render("error", {
-        error: "Error al cargar los productos en controller",
+        error: "Error al cargar los productos en Views controller",
       });
     }
   }
@@ -41,8 +41,7 @@ export default class ViewsController {
     } catch (error) {
     
       res.render("error", {
-        error: "Error al cargar los productos en controller",í
-        
+        error: "Error al cargar los productos en controller" 
       });
     }
   }

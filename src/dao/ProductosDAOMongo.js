@@ -65,9 +65,13 @@ export class ProductosDAOMongo {
     }
   }
 
-  static async getPaginatedProducts(options) {
+static async getPaginatedProducts(options) {
+  try {
     return await ProductoModel.paginate({}, options);
+  } catch (error) {
+    throw new Error(`Error al obtener productos paginados: ${error.message}`);
   }
+}
 
   static async findById(id) {
     return await ProductoModel.findById(id).lean();

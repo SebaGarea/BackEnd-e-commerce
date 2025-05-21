@@ -46,7 +46,7 @@ export class CartsDAOMongo {
         };
       }
 
-      const producto = await ProductoModel.findOne({ cod: pid }).lean();
+      const producto = await ProductoModel.findById(pid).lean();
       if (!producto) {
         return res.status(404).json({
           status: "error",
@@ -92,6 +92,34 @@ export class CartsDAOMongo {
       );
     }
   }
+
+  async findOne() {
+    try {
+      return await cartModel.findOne().lean();
+    } catch (error) {
+      throw new Error(`Error al buscar un carrito en DB: ${error.message}`);
+    }
+  }
+
+  async updateCart(cid, products) {
+  try {
+    const cart = await cartModel.findById(cid);
+    if (!cart) {
+      return null; 
+    }
+
+    
+    cart.productos = products.map((producto) => ({
+      producto: producto.product, 
+      quantity: producto.quantity, 
+    }));
+
+    await cart.save();
+    return await cart.populate("productos.producto");
+  } catch (error) {
+    throw new Error(`Error al actualizar el carrito: ${error.message}`);
+  }
+}
 
   // async findOne(){
   //   return await cartModel.findOne()
