@@ -6,9 +6,11 @@ import {
   deleteProductFromCartController,
   getCartIdController,
   getController,
-  updateCartController
+  updateCartController,
+  
 } from "../controllers/carts.controller.js";
 import { autorizeUser } from "../middleware/auth.js";
+import { purchaseController } from "../controllers/purchaseController.js";
 
 export const router = Router();
 
@@ -34,4 +36,11 @@ router.put(
   passport.authenticate("current", { session: false }),
   autorizeUser,
    updateCartController
+);
+
+router.post(
+  "/:cid/purchase",
+  passport.authenticate("current", { session: false }),
+  autorizeUser,
+  purchaseController
 );
