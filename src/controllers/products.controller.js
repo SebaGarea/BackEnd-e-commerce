@@ -7,32 +7,17 @@ export default class ProductosController {
       const productos = await productosService.getProductos();
       const productosDTO = ProductoDTO.fromArray(productos);
 
-      if (
-        req.headers.accept &&
-        req.headers.accept.includes("application/json")
-      ) {
-        return res.json({
-          status: "success",
-          productos: productosDTO,
-        });
-      }
-
-      return res.render("productos", { productos: productosDTO });
-      
+      return res.json({
+        status: "success",
+        productos: productosDTO,
+      });
     } catch (error) {
       console.error("Error al obtener productos:", error);
 
-      if (
-        req.headers.accept &&
-        req.headers.accept.includes("application/json")
-      ) {
-        return res.status(500).json({
-          status: "error",
-          error: "Error al obtener los productos",
-        });
-      }
-
-      return res.render("error", { error: "Error al obtener los productos" });
+      return res.status(500).json({
+        status: "error",
+        error: "Error al obtener los productos",
+      });
     }
   }
 
@@ -43,23 +28,19 @@ export default class ProductosController {
       const producto = await productosService.getProductosById(id);
 
       if (!producto) {
-        return res.render("error", { error: "Producto no encontrado" });
-      }
+      return res.status(404).json({ 
+        status: "error", 
+        error: "Producto no encontrado" 
+      });
+    }
 
       const productoDTO = ProductoDTO.fromObject(producto);
 
-      if (
-        req.headers.accept &&
-        req.headers.accept.includes("application/json")
-      ) {
-        return res.json({
-          status: "success",
-          message: "Producto encontrado",
-          producto: productoDTO,
-        });
-      }
-
-      return res.render("producto", { producto: productoDTO });
+      return res.json({
+        status: "success",
+        message: "Producto encontrado",
+        producto: productoDTO,
+      });
     } catch (error) {
       console.error("Error al obtener el producto:", error);
       res.status(500).json({
@@ -70,80 +51,46 @@ export default class ProductosController {
   }
 
   static async postProductos(req, res) {
-  try {
-    let productData;
+    try {
+      let productData;
 
-    // Si los datos vienen en JSON (sin archivo)
-    if (!req.file) {
-      productData = req.body;
-    } else {
-      // Si los datos vienen como form-data con un archivo
-      productData = {
-        ...req.body,
-        thumbnail: req.file.filename, // Guardar el nombre del archivo subido
-      };
+      if (!req.file) {
+        productData = req.body;
+      } else {
+        productData = {
+          ...req.body,
+          thumbnail: req.file.filename,
+        };
+      }
+
+      if (
+        !productData.title ||
+        !productData.code ||
+        !productData.price ||
+        !productData.stock ||
+        !productData.description ||
+        !productData.category ||
+        productData.status === undefined
+      ) {
+        return res.status(400).json({ error: "Faltan campos requeridos" });
+      }
+
+      const newProduct = await productosService.createProducto(productData);
+
+      res.status(201).json({
+        status: "success",
+        message: "Producto creado exitosamente",
+        producto: newProduct,
+      });
+    } catch (error) {
+      console.error("Error al crear producto:", error);
+      res.status(500).json({
+        status: "error",
+        message: "Error al crear el producto",
+        error: error.message,
+      });
     }
-
-    // Validar que todos los campos requeridos estén presentes
-    if (
-      !productData.title ||
-      !productData.code ||
-      !productData.price ||
-      !productData.stock ||
-      !productData.description ||
-      !productData.category ||
-      productData.status === undefined
-    ) {
-      return res.status(400).json({ error: "Faltan campos requeridos" });
-    }
-
-    // Crear el producto en la base de datos
-    const newProduct = await productosService.createProducto(productData);
-
-    res.status(201).json({
-      status: "success",
-      message: "Producto creado exitosamente",
-      producto: newProduct,
-    });
-  } catch (error) {
-    console.error("Error al crear producto:", error);
-    res.status(500).json({
-      status: "error",
-      message: "Error al crear el producto",
-      error: error.message,
-    });
   }
-}
-  // static async postProductos(req, res) {
-  //   try {
-  //     const productData = new ProductoDTO({
-  //       ...req.body,
-  //       thumbnail: req.file ? req.file.filename : undefined,
-  //     });
-
-  //     productData.validate();
-
-  //     const newProduct = await productosService.createProducto(productData);
-
-     
-  //       // return res.json({
-  //       //   status: "success",
-  //       //   message: "Producto creado",
-  //       //   producto: newProduct,
-  //       // });
-      
-  //     res.redirect("/productos");
-
-  //   } catch (error) {
-  //     console.error(error)
-  //     console.error("Error al crear producto:", error);
-  //     res.render("error", {
-  //       error: "Error al crear el producto: " + error.message,
-  //     });
-  //   }
-  // }
-
-
 
   static async deleteProducto(req, res) {
     try {
@@ -152,11 +99,11 @@ export default class ProductosController {
       const deletedProducto = await productosService.deleteProducto(productoId);
 
       if (!deletedProducto) {
-      return res.status(404).json({
-        status: "error",
-        message: `Producto con ID ${productoId} no encontrado`,
-      });
-    }
+        return res.status(404).json({
+          status: "error",
+          message: `Producto con ID ${productoId} no encontrado`,
+        });
+      }
       const productoDTO = ProductoDTO.fromObject(deletedProducto);
 
       res.json({
@@ -165,7 +112,16 @@ export default class ProductosController {
         producto: productoDTO,
       });
     } catch (error) {
-      console.error("Error al eliminar el producto:", error);
+      // Si el error es "no encontrado", responde 404 con mensaje estándar
+      if (
+        error.message.includes("no encontrado") ||
+        error.message.includes("no existe")
+      ) {
+        return res.status(404).json({
+          status: "error",
+          error: "Producto no encontrado"
+        });
+      }
       res.status(500).json({
         status: "error",
         message: "Error al eliminar el producto",
@@ -173,7 +129,6 @@ export default class ProductosController {
       });
     }
   }
-
 
   static async updateProducto(req, res) {
     try {
@@ -189,48 +144,36 @@ export default class ProductosController {
         updateFields
       );
 
-         if (!updatedProducto) {
-      if (
-        req.headers.accept &&
-        req.headers.accept.includes("application/json")
-      ) {
+      if (!updatedProducto) {
         return res.status(404).json({
           status: "error",
           message: `Producto con ID ${pid} no encontrado`,
         });
       }
-      return res.render("error", { error: `Producto con ID ${pid} no encontrado` });
-    }
 
-
-    
       const productoDTO = ProductoDTO.fromObject(updatedProducto);
 
+      return res.json({
+        status: "success",
+        message: "Producto actualizado exitosamente",
+        producto: productoDTO,
+      });
+    }catch (error) {
+      // Si el error es "no encontrado", responde 404 con mensaje estándar
       if (
-        req.headers.accept &&
-        req.headers.accept.includes("application/json")
+        error.message.includes("no encontrado") ||
+        error.message.includes("no existe")
       ) {
-        return res.json({
-          status: "success",
-          message: "Producto actualizado exitosamente",
-          producto: productoDTO,
-        });
-      }
-
-      return res.redirect("/productos");
-
-    } catch (error) {
-      console.error("Error al actualizar el producto:", error);
-      if (
-        req.headers.accept &&
-        req.headers.accept.includes("application/json")
-      ) {
-        return res.status(500).json({
+        return res.status(404).json({
           status: "error",
-          error: "Error al Actualizar el producto en controller",
+          error: "Producto no encontrado"
         });
       }
-      return res.render("error", { error: "Error al actulizar el producto" });
+      res.status(500).json({
+        status: "error",
+        message: "Error al eliminar el producto",
+        error: error.message,
+      });
     }
   }
 }

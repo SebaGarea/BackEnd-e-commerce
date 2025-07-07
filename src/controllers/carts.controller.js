@@ -74,32 +74,21 @@ export const addProductController = async (req, res) => {
       });
     }
 
-    if (req.headers.accept && req.headers.accept.includes("application/json")) {
       return res.json({
-        status: "succes",
+        status: "Producto agregado al carrito",
         cart: updatedCart,
       });
-    }
-
-    res.status(200).render("cart", {
-      cart: updatedCart.toObject(),
-      status: "success",
-      message: "Producto agregado al carrito",
-    });
+    
   } catch (error) {
     console.error("Error al agregar producto al carrito:", error);
 
-    if (req.headers.accept && req.headers.accept.includes("application/json")) {
       return res.status(500).json({
         status: "error",
         message:
           "Error al agregar producto en el carrito, en el controller de carts",
       });
-    }
-
-    res.status(500).render("error", {
-      error: "Error al agregar producto al carrito",
-    });
+  
+  
   }
 };
 
@@ -110,40 +99,26 @@ export const deleteProductFromCartController = async (req, res) => {
     const cart = await cartsService.deleteProductFromCartService(cid, pid);
 
     if (!cart) {
-      if (
-        req.headers.accept &&
-        req.headers.accept.includes("application/json")
-      ) {
         return res.status(404).json({
           status: "error",
-          message: "Carrito no encontrado",
+          message: "Carrito o Producto no encontrado",
         });
       }
-      return res
-        .status(404)
-        .render("error", { error: "Carrito no encontrado" });
-    }
-
-    if (req.headers.accept && req.headers.accept.includes("application/json")) {
+    
       return res.json({
         status: "success",
         message: "Producto eliminado del carrito",
         cart,
       });
-    }
-    res.redirect(`/cart/${cid}`);
+
   } catch (error) {
     console.error("Error al eliminar producto del carrito:", error);
 
-    if (req.headers.accept && req.headers.accept.includes("application/json")) {
       return res.status(500).json({
         status: "error",
         message: "Error interno del servidor",
       });
-    }
-    res.status(500).render("error", {
-      error: "Error interno al eliminar producto del carrito",
-    });
+    
   }
 };
 

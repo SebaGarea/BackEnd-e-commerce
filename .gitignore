@@ -1,16 +1,25 @@
 # Dependencias
 node_modules/
 
-
+# Archivos de entorno
+.env*
 
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
 
 # Directorios de cache
-.npm
+.npm/
+.cache/
 
 # Archivos del sistema
 .DS_Store
 Thumbs.db
+
+# Archivos de cobertura (puedes incluir coverage/ si no quieres subir reportes generados)
+# coverage/
+
+# Archivos de configuración de editores (opcional)
+.vscode/
+.idea/
